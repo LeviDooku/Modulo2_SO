@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
     }
 
     //Se pasa el segundo argumento a octal usando strtol
-    long int mask;
+    unsigned int mask;
     mask = strtol(argv[2], NULL, 8);
 
     if(mask == 0 && argv[2] != 0){
@@ -88,7 +88,6 @@ int main(int argc, char *argv[]){
         }
 
         //Condicional que comprueba que el directorio no sea el padre, ni el hijo ni el nombre del programa
-
         if(strcmp(dir_struct->d_name, ".") != 0 && strcmp(dir_struct->d_name, "..") != 0 && strcmp(dir_struct->d_name, nombre)){
             if(lstat(dir_struct->d_name, &meta) < 0){ //Se comprueba si la obtención de metadatos es correcta
                 printf("[-] Error en la obtención de metadatos de %s", dir_struct->d_name);
@@ -100,17 +99,19 @@ int main(int argc, char *argv[]){
                 permisos_antiguos = (meta.st_mode & S_IRUSR) | (meta.st_mode & S_IWUSR) | (meta.st_mode & S_IXUSR) | //Usuario
                                     (meta.st_mode & S_IRGRP) | (meta.st_mode & S_IWGRP) | (meta.st_mode & S_IXGRP) | //Grupo
                                     (meta.st_mode & S_IROTH) | (meta.st_mode & S_IWOTH) | (meta.st_mode & S_IXOTH);  //Otros
+            
+                if(chmod(dir_struct->d_name, mask) < 0){
+                    printf("[-] Error en el cambio de permisos de %s\n", dir_struct->d_name);
+                    printf("<%s> : <%d> <%u>\n", dir_struct->d_name, errno, permisos_antiguos);
+                }
+                else{
+                    printf("[+] Los permisos fueron cambiados con éxito\n");
+                    printf("<%s> : <%u> <%u>", dir_struct->d_name, permisos_antiguos, mask);
+                }
             }
-
         }
     }
 
-
-
-
-
-
-
-
-
+    closedir(directorio);
+    return 0;
 }
