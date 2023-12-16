@@ -37,6 +37,7 @@ información en la línea de salida:
 #include<errno.h>
 #include<stdlib.h>
 #include<dirent.h>
+#include<string.h>
 
 int main(int argc, char *argv[]){
 
@@ -62,11 +63,38 @@ int main(int argc, char *argv[]){
 
     directorio = opendir(argv[1]);
 
+    //Se comprueba si el argumento es correcto y la función opendir ha funcionado
     if(directorio == NULL){
-        printf("[-] Error en opendir\n");
+        printf("[-] Error en opendir\n NO se puede acceder a (%s) o no hay memoria suficiente\n", argv[1]);
         perror("ERROR EN OPENDIR");
         exit(EXIT_FAILURE);
     }
+
+    struct dirent *dir_struct; //Para almacenar la estructura dirent
+    struct stat atributos;  //Para almacenar los atributos del archivo (directorio)
+    unsigned int permisos_antiguos;
+
+    const unsigned long TAM_NOMBRE = strlen(argv[0]) - 2; //IMPORTANTE: se le resta 2 para no contar "./"
+    char nombre[TAM_NOMBRE]; 
+    char *nombre_programa = &argv[0][2]; //Empieza en el 3er caracter. (./ejecutable)
+    sprintf(nombre, "%.*s", (int)TAM_NOMBRE, nombre_programa); //Se copia el nombre en la cadena nombre
+
+    int i = 0;
+    for(errno = 0; (dir_struct = readdir(directorio)) != NULL; errno = 0, i++){
+        if(errno != 0){
+            printf("[-] Error en la lectura de directorio");
+            printf("ERROR EN READDIR");
+            exit(EXIT_FAILURE);
+        }
+
+        if(strcmp(dir_struct->d_name, ".") != 0 && strcmp(dir_struct->d_name, "..") != 0 && strcmp(dir_struct->d_name, nombre)){
+            if(lstat(dir_struct->d_name, &atributos) < 0){ //Se comprueba si la obtención de metadatos es correcta
+                printf("[-] Error en la obtención de metadatos de %s", dir_struct->d_name);
+                printf("ERROR EN LSTAT");
+            }
+        }
+    }
+
 
 
 

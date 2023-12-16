@@ -31,6 +31,8 @@ int main(int argc, char *argv[]){
 
     //Análisis de los argumentos
 
+    //Se usa lstat para el análisis exhaustivo del archivo
+
     for(i = 1; i < argc; i++){
         printf("%s: ", argv[i]);
         if(lstat(argv[i], &atributos) < 0){ //Se comprueba si la lectura del argumento es correcta
