@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
     }
 
     struct dirent *dir_struct; //Para almacenar la estructura dirent
-    struct stat atributos;  //Para almacenar los atributos del archivo (directorio)
+    struct stat meta;  //Para almacenar los atributos del archivo (directorio)
     unsigned int permisos_antiguos;
 
     const unsigned long TAM_NOMBRE = strlen(argv[0]) - 2; //IMPORTANTE: se le resta 2 para no contar "./"
@@ -87,11 +87,21 @@ int main(int argc, char *argv[]){
             exit(EXIT_FAILURE);
         }
 
+        //Condicional que comprueba que el directorio no sea el padre, ni el hijo ni el nombre del programa
+
         if(strcmp(dir_struct->d_name, ".") != 0 && strcmp(dir_struct->d_name, "..") != 0 && strcmp(dir_struct->d_name, nombre)){
-            if(lstat(dir_struct->d_name, &atributos) < 0){ //Se comprueba si la obtención de metadatos es correcta
+            if(lstat(dir_struct->d_name, &meta) < 0){ //Se comprueba si la obtención de metadatos es correcta
                 printf("[-] Error en la obtención de metadatos de %s", dir_struct->d_name);
                 printf("ERROR EN LSTAT");
+                exit(EXIT_FAILURE);
             }
+            else{
+                //Mediante el operador & (AND) y | (OR) se obtienen los permisos antiguos
+                permisos_antiguos = (meta.st_mode & S_IRUSR) | (meta.st_mode & S_IWUSR) | (meta.st_mode & S_IXUSR) | //Usuario
+                                    (meta.st_mode & S_IRGRP) | (meta.st_mode & S_IWGRP) | (meta.st_mode & S_IXGRP) | //Grupo
+                                    (meta.st_mode & S_IROTH) | (meta.st_mode & S_IWOTH) | (meta.st_mode & S_IXOTH);  //Otros
+            }
+
         }
     }
 
