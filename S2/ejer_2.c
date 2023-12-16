@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
     }
 
     struct dirent *dir_struct; //Para almacenar la estructura dirent
-    struct stat meta;  //Para almacenar los atributos del archivo (directorio)
+    struct stat meta;  //Para almacenar los atributos del archivo
     unsigned int permisos_antiguos;
 
     const unsigned long TAM_NOMBRE = strlen(argv[0]) - 2; //IMPORTANTE: se le resta 2 para no contar "./"
@@ -86,11 +86,10 @@ int main(int argc, char *argv[]){
             printf("ERROR EN READDIR");
             exit(EXIT_FAILURE);
         }
-
         //Condicional que comprueba que el directorio no sea el padre, ni el hijo ni el nombre del programa
-        if(strcmp(dir_struct->d_name, ".") != 0 && strcmp(dir_struct->d_name, "..") != 0 && strcmp(dir_struct->d_name, nombre)){
+        if(strcmp(dir_struct->d_name, ".") != 0 && strcmp(dir_struct->d_name, "..") != 0){
             if(lstat(dir_struct->d_name, &meta) < 0){ //Se comprueba si la obtención de metadatos es correcta
-                printf("[-] Error en la obtención de metadatos de %s", dir_struct->d_name);
+                printf("[-] Error en la obtención de metadatos de %s\n", dir_struct->d_name);
                 printf("ERROR EN LSTAT");
                 exit(EXIT_FAILURE);
             }
