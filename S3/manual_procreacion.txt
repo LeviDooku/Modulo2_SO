@@ -1,0 +1,73 @@
+Cortesía de David xddd 
+
+/* JERARQUÍAS DE PROCESOS */ --------------------------------------------------
+
+IMPORTANTE:
+    debemos tener soltura con el uso del fork. para ello veremos cómo podemos
+crear dos tipos de jerarquías de procesos. antes debemos tener en cuenta qué
+ocurre en la siguiente situación:
+    
+    for(int i=0; i<3; i++) {
+        fork();
+    }
+
+¿cuántos procesos hijo se crearán? ¿3????? NOOOOOOOOOOOOOOOOOOOOOOOOO
+                padre       hijo1       hijo2        hijo3   
+1a iteración    crea h1 
+2a iteración    crea h2     crea h3
+2a iteración    crea h4     crea h5     crea h6      crea h7
+
+SE CREAN 7 HIJAZOS!!!!!!!!!!!!!!!!!!!!!!!!!
+
+asi que vistan sus mejores condones porque hoy veremos:
+
+    JERARQUÍAS DE PROCESOS PADRE-HIJO
+
+
+JERARQUÍA 1: familia subsahariana 
+en esta jerarquía el primer proceso es el único que crea hijos, es decir, hay
+un solo padre. todos los hijos son hermanos entre sí.
+
+   ----- padre --------
+  /     /     \        \
+hijo1 hijo2 hijo3 ... hijon
+
+para ello debemos evitar que el fork sea llamado por los hijos en el bucle:
+
+for(int i=0; i<50; i++) {
+    pid_hijo = fork();        // se crea el hijo
+
+    if (pid_hijo == 0) break; // el hijo se sale del bucle y no sigue iterando
+}
+
+así el padre contará con la friolera de.... 50 HIJOS!!!! ejército de crios ready 
+para cavar olivos...
+
+JERARQUÍA 2: ves todo esto????? antes era to campo!!
+
+no sé por qué le he puesto este nombre, pero en este caso los hijos son los que van
+creando hijos, es decir, el padre inicial crea a su hijo, y a su vez este hijo
+será el padre de otro hijo, y así repetidas veces.
+
+                            padre
+                              |
+                             hijo
+                              |
+                             hijo
+                              |
+                             hijo
+                              |
+                             hijo
+                              |
+                             hijo
+
+para ello debemos detener el bucle en el padre:
+
+for(int i=0; i<50; i++) {
+    pid_hijo = fork();
+
+    if (pid_hijo != 0) break; // el padre deja de iterar el bucle
+}
+
+
+y ya estaría señores...... a procrear!!!
