@@ -1,7 +1,7 @@
 /*
 tarea8.c
-Programa ilustrativo del uso de pipes y la redirección de entrada y
-salida estándar: "ls | sort", utilizando la llamada dup2.
+Programa ilustrativo del uso de pipes y la redirecciï¿½n de entrada y
+salida estï¿½ndar: "ls | sort", utilizando la llamada dup2.
 */
 
 #include<sys/types.h>
@@ -19,7 +19,7 @@ pid_t PID;
 pipe(fd); // Llamada al sistema para crear un pipe
 
 if ( (PID= fork())<0) {
-	perror("\Error en fork");
+	perror("\nError en fork");
 	exit(EXIT_FAILURE);
 }
 if (PID == 0) { // ls
@@ -37,8 +37,8 @@ else { // sort. Proceso padre porque PID != 0.
 	close(fd[1]);
 
 	//Duplicar el descriptor de lectura de cauce en el descriptor
-	//correspondiente a la entrada estándar (stdin), cerrado previamente en
-	//la misma operación
+	//correspondiente a la entrada estï¿½ndar (stdin), cerrado previamente en
+	//la misma operaciï¿½n
 	dup2(fd[0],STDIN_FILENO);
 	execlp("sort","sort",NULL);
 }

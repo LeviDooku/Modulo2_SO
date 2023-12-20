@@ -1,7 +1,7 @@
 /*
 tarea7.c
-Programa ilustrativo del uso de pipes y la redirección de entrada y
-salida estándar: "ls | sort"
+Programa ilustrativo del uso de pipes y la redirecciï¿½n de entrada y
+salida estÃ¡ndar: "ls | sort"
 */
 
 #include<sys/types.h>
@@ -35,22 +35,22 @@ if(PID == 0) { // ls
 	//Duplicar el descriptor de escritura en cauce en el descriptor
 	//correspondiente a la salida estandar (stdout)
 	dup(fd[1]);
-	execlp("ls","ls",NULL);
+	execlp("neofetch","neofetch",NULL);
 }
 else { // sort. Estoy en el proceso padre porque PID != 0
 
-	//Establecer la dirección del flujo de datos en el cauce cerrando
+	//Establecer la direcciï¿½n del flujo de datos en el cauce cerrando
 	// el descriptor de escritura en el cauce del proceso padre.
 	close(fd[1]);
 
-	//Redirigir la entrada estándar para tomar los datos del cauce.
-	//Cerrar la entrada estándar del proceso padre
+	//Redirigir la entrada estï¿½ndar para tomar los datos del cauce.
+	//Cerrar la entrada estï¿½ndar del proceso padre
 	close	(STDIN_FILENO);
 
 	//Duplicar el descriptor de lectura de cauce en el descriptor
-	//correspondiente a la entrada estándar (stdin)
+	//correspondiente a la entrada estï¿½ndar (stdin)
 	dup(fd[0]);
-	execlp("sort","sort",NULL);
+	execlp("lolcat","lolcat",NULL);
 }
 
 return EXIT_SUCCESS;

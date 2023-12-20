@@ -60,7 +60,6 @@ if(stat("archivo1",&atributos) < 0) {
 }
 
 //Quitamos los permisos de ejecución de grupos al archivo 1
-
 if(chmod("archivo1", (atributos.st_mode & ~S_IXGRP) | S_ISGID) < 0) {
 	perror("\nError en chmod para archivo1");
 	exit(EXIT_FAILURE);
