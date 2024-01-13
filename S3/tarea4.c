@@ -20,7 +20,7 @@ pid_t pid;
 var=88;
 
 //Se escribe por la terminal el contenido de buf
-if(write(STDOUT_FILENO,buf,sizeof(buf)+1) != sizeof(buf)+1) {
+if(write(STDOUT_FILENO,buf,sizeof(buf)) != sizeof(buf)) {
 	perror("\nError en write");
 	exit(EXIT_FAILURE);
 }
@@ -41,11 +41,14 @@ if( (pid=fork())<0) {
 	exit(EXIT_FAILURE);
 }
 else if(pid==0) {  //Si el pid = 0, el proceso hijo está ejecutando
-	//proceso hijo ejecutando el programa
+	//proceso hijo ejecutando el programa, no hay tiempo de espera
 	global++;
 	var++;
-} else  //proceso padre ejecutando el programa
-	sleep(1);		
+} else { //proceso padre ejecutando el programa
+	sleep(1); //Duerme un segundo y ejecuta las líneas inferiores
+	var = 33;
+	global = 2;
+}	
 printf("\npid= %d, global= %d, var= %d\n", getpid(),global,var);
 exit(EXIT_SUCCESS);
 }
