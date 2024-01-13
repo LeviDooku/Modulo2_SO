@@ -30,7 +30,7 @@ if(setvbuf(stdout,NULL,_IONBF,0)) {
 	perror("\nError en setvbuf");
 }
 
-//También podríamos omitir el condicional anterior y poner un \n al final xddd
+//También podríamos omitir el condicional anterior y poner un \n al final xddd (\n vacía el búfer)
 
 printf("\nMensaje previo a la ejecución de fork\n");
 
