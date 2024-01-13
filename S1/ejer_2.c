@@ -26,6 +26,7 @@ const int TAM_BLOQUE = 80;
 int main(int argc, char *argv[]){
     
     //Filtro argumentos
+    
     if (argc != 2) {
         fprintf(stderr, "[-] número de argumentos incorrecto.\n"
                         "uso: %s <input>\n", argv[0]);

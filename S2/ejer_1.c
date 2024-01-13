@@ -44,8 +44,7 @@ if( (fd1=open("archivo1",O_CREAT|O_TRUNC|O_WRONLY,S_IRGRP|S_IWGRP|S_IXGRP))<0) {
 	exit(EXIT_FAILURE);
 }
 
-
-umask(0); //Esta máscara asegura que ningún permiso será bloqueado
+umask(0); //Esta máscara asegura que ningún permiso será bloqueado a la hora de su creación
 if( (fd2=open("archivo2",O_CREAT|O_TRUNC|O_WRONLY,S_IRGRP|S_IWGRP|S_IXGRP))<0) {
 	printf("\nError %d en open(archivo2,...)",errno);
 	perror("\nError en open");
