@@ -23,6 +23,8 @@ int es_par;
 int es_divisible;
 
 int main(int argc, char *argv[]){
+
+    //Filtro de argumentos
     if(argc != 2){
         printf("[-] ERROR en el número de argumentos\n Uso: <número_entero>\n");
         exit(EXIT_FAILURE);
@@ -35,15 +37,15 @@ int main(int argc, char *argv[]){
         perror("[-] ERROR en fork");
         exit(EXIT_FAILURE);
     }
-    else if(pid == 0){
+    else if(pid == 0){ //Proceso hijo comprueba si es par o impar
         es_par = ((num_entero % 2) != 0) ? 1 : 0;
         if(es_par == 0)
             printf("Proceso hijo (PID = %d):\n %d es par\n\n", getpid(), num_entero);
         else
             printf("Proceso hijo (PID = %d):\n %d es impar\n\n", getpid(), num_entero);
     }
-    else{
-        sleep(1);
+    else{ //Proceso padre comprueba si es divisible entre 4
+        //sleep(1); Como no se accede a la misma variable global, podemos omitir la espera ociosa
         es_divisible = ((num_entero % 4) != 0) ? 1 : 0;
         if(es_divisible == 0)
             printf("Proceso padre (PID = %d):\n %d es divible entre 4\n\n", getpid(), num_entero);

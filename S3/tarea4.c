@@ -49,6 +49,7 @@ else if(pid==0) {  //Si el pid = 0, el proceso hijo está ejecutando
 	var = 33;
 	global = 2;
 }	
+
 printf("\npid= %d, global= %d, var= %d\n", getpid(),global,var);
 exit(EXIT_SUCCESS);
 }
