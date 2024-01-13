@@ -11,34 +11,34 @@
 #include <string.h>
 #define ARCHIVO_FIFO "ComunicacionFIFO"
 
-int main(void)
-{
-int fd;
-char buffer[80];// Almacenamiento del mensaje del cliente.
-int leidos;
+int main(void){
+	int fd;
+	char buffer[80];// Almacenamiento del mensaje del cliente.
+	int leidos;
 
-//Crear el cauce con nombre (FIFO) si no existe
-umask(0);
-mknod(ARCHIVO_FIFO,S_IFIFO|0666,0);
-//también vale: mkfifo(ARCHIVO_FIFO,0666);
+	//Crear el cauce con nombre (FIFO) si no existe
+	umask(0);
+	mknod(ARCHIVO_FIFO,S_IFIFO|0666,0);
+	//también vale: mkfifo(ARCHIVO_FIFO,0666);
 
-//Abrir el cauce para lectura-escritura
-if ( (fd=open(ARCHIVO_FIFO,O_RDWR)) <0) {
-perror("open");
-exit(EXIT_FAILURE);
-}
+	//Abrir el cauce para lectura-escritura
+	if ( (fd=open(ARCHIVO_FIFO,O_RDWR)) <0) {
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
 
-//Aceptar datos a consumir hasta que se envíe la cadena fin
-while(1) {
-leidos=read(fd,buffer,80);
-if(strcmp(buffer,"fin")==0) {
-close(fd);
-return EXIT_SUCCESS;
-}
-printf("\nMensaje recibido: %s\n", buffer);
-}
+	//Aceptar datos a consumir hasta que se envíe la cadena fin
+	while(1) {
+		leidos=read(fd,buffer,80);
+		if(strcmp(buffer,"fin")==0) {
+			printf("Se ha terminado de consumir\n");
+			close(fd);
+			return EXIT_SUCCESS;
+		}
+		printf("\nMensaje recibido: %s\n", buffer);
+	}
 
-return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 
