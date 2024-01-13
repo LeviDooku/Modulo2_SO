@@ -11,49 +11,48 @@ salida estándar: "ls | sort"
 #include<stdlib.h>
 #include<errno.h>
 
-int main(int argc, char *argv[]) 
-{
-int fd[2];
-pid_t PID;
+int main(int argc, char *argv[]){
+	int fd[2];
+	pid_t PID;
 
-pipe(fd); // Llamada al sistema para crear un pipe
+	pipe(fd); // Llamada al sistema para crear un pipe
 
-if ( (PID= fork())<0) {
-	perror("fork");
-	exit(EXIT_FAILURE);
-}
-if(PID == 0) { // ls
-	//Establecer la direccion del flujo de datos en el cauce cerrando
-	// el descriptor de lectura de cauce en el proceso hijo
-	close(fd[0]);
+	if ( (PID= fork())<0) {
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if(PID == 0) { // neofecth
+		//Establecer la direccion del flujo de datos en el cauce cerrando
+		// el descriptor de lectura de cauce en el proceso hijo
+		close(fd[0]);
 
-	//Redirigir la salida estandar para enviar datos al cauce
-	//--------------------------------------------------------
-	//Cerrar la salida estandar del proceso hijo
-	close(STDOUT_FILENO);
+		//Redirigir la salida estandar para enviar datos al cauce
+		//--------------------------------------------------------
+		//Cerrar la salida estandar del proceso hijo
+		close(STDOUT_FILENO);
 
-	//Duplicar el descriptor de escritura en cauce en el descriptor
-	//correspondiente a la salida estandar (stdout)
-	dup(fd[1]);
-	execlp("neofetch","neofetch",NULL);
-}
-else { // sort. Estoy en el proceso padre porque PID != 0
+		//Duplicar el descriptor de escritura en cauce en el descriptor
+		//correspondiente a la salida estandar (stdout)
+		dup(fd[1]);
+		execlp("neofetch","neofetch",NULL);
+	}
+	else { // lolcat. Estoy en el proceso padre porque PID != 0
 
-	//Establecer la direcci�n del flujo de datos en el cauce cerrando
-	// el descriptor de escritura en el cauce del proceso padre.
-	close(fd[1]);
+		//Establecer la direcci�n del flujo de datos en el cauce cerrando
+		// el descriptor de escritura en el cauce del proceso padre.
+		close(fd[1]);
 
-	//Redirigir la entrada est�ndar para tomar los datos del cauce.
-	//Cerrar la entrada est�ndar del proceso padre
-	close	(STDIN_FILENO);
+		//Redirigir la entrada est�ndar para tomar los datos del cauce.
+		//Cerrar la entrada est�ndar del proceso padre
+		close	(STDIN_FILENO);
 
-	//Duplicar el descriptor de lectura de cauce en el descriptor
-	//correspondiente a la entrada est�ndar (stdin)
-	dup(fd[0]);
-	execlp("lolcat","lolcat",NULL);
-}
+		//Duplicar el descriptor de lectura de cauce en el descriptor
+		//correspondiente a la entrada est�ndar (stdin)
+		dup(fd[0]);
+		execlp("lolcat","lolcat",NULL);
+	}
 
-return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 
