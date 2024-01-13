@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
             printf("Proceso hijo (PID = %d):\n %d es impar\n\n", getpid(), num_entero);
     }
     else{ //Proceso padre comprueba si es divisible entre 4
-        //sleep(1); Como no se accede a la misma variable global, podemos omitir la espera ociosa
+        //sleep(1); Como no se accede a la misma variable global, podemos omitir la espera, en este caso supondría una cuestión de diseño
         es_divisible = ((num_entero % 4) != 0) ? 1 : 0;
         if(es_divisible == 0)
             printf("Proceso padre (PID = %d):\n %d es divible entre 4\n\n", getpid(), num_entero);

@@ -50,6 +50,6 @@ int main(int argc, char *argv[]){
     }
     else{
         if(argc == 2 ||(argc > 2 && strcmp(argv[argc-1], "bg") != 0)) //Si se requiere que se ejecute en foreground, se espera a que el hijo termine
-            wait(NULL);
+            wait(NULL); //Se bloquea al padre hasta que el hijo termine
     }
 }

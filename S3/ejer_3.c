@@ -23,7 +23,7 @@ int main(){
     const int nprocs = 20;
     pid_t childpid;
 
-    //Jerarquía de procesos del primer tipo
+    //Jerarquía de procesos del primer tipo (1 padre, muchos hijos)
 
     for(int i = 1; i < nprocs; i++){
         if ((childpid = fork()) == -1){
@@ -31,13 +31,13 @@ int main(){
             exit(-1);
         }
 
-        if(childpid)
+        if(childpid) //childpid == 0
             break;
 
         printf("\n[+] PROCESO %d:\n PID = %d, PPID = %d\n", i, getpid(), getppid());
     }
 
-    //Jerarquía de procesos del segundo tipo
+    //Jerarquía de procesos del segundo tipo (1 padre, 1 hijo -> 1 hijo etc.)
 
     for(int i = 1; i < nprocs; i++){
         if ((childpid = fork()) == -1){
@@ -45,7 +45,7 @@ int main(){
             exit(-1);
         }
 
-        if(!childpid)
+        if(!childpid) //childpid != 0
             break;
 
         printf("\n[+] PROCESO %d:\n PID = %d, PPID = %d\n", i, getpid(), getppid());
