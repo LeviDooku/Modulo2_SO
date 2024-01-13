@@ -21,4 +21,8 @@ int main(void){
     printf("Identificador de proceso: %d\n", id_proceso);
     printf("Identificador de proceso padre: %d\n", id_padre);
 
+    //También es válido:
+
+    //printf("Identificador de proceso: %d\n", getpid());
+    //printf("Identificador de proceso padre: %d\n", getppid());
 }
