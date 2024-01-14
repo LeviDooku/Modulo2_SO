@@ -8,17 +8,16 @@
 
 static int signal_recibida = 0;
 
-static void manejador (int sig)
-{
-          signal_recibida = 1;
+static void manejador (int sig){
+    signal_recibida = 1;
 }
 
-int main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]){
     sigset_t conjunto_mascaras;
     sigset_t conj_mascaras_original;
     struct sigaction act;
-//Iniciamos a 0 todos los elementos de la estructura act 
+
+    //Iniciamos a 0 todos los elementos de la estructura act 
     memset (&act, 0, sizeof(act));
 
     act.sa_handler = manejador;
@@ -30,6 +29,7 @@ int main (int argc, char *argv[])
     
     //Iniciamos un nuevo conjunto de mascaras
     sigemptyset (&conjunto_mascaras);
+
     //A–adimos SIGTERM al conjunto de mascaras
     sigaddset (&conjunto_mascaras, SIGTERM);
     
@@ -51,5 +51,6 @@ int main (int argc, char *argv[])
 
    if (signal_recibida)
        printf ("\nSenal recibida\n");
+   
    exit(EXIT_SUCCESS);
 }

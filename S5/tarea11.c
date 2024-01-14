@@ -3,17 +3,15 @@
 #include <stdio.h>
 #include <signal.h>
 
-int main()
+int main(){
+	sigset_t new_mask;
 
-{
-sigset_t new_mask;
+	/* inicializar la nueva mascara de señales */
+	sigemptyset(&new_mask);
 
-/* inicializar la nueva mascara de señales */
-sigemptyset(&new_mask);
+	sigaddset(&new_mask, SIGUSR1);
 
-sigaddset(&new_mask, SIGUSR1);
-
-/*esperar a cualquier señal excepto SIGUSR1 */
-sigsuspend(&new_mask);
+	/*esperar a cualquier señal excepto SIGUSR1 */
+	sigsuspend(&new_mask);
 
 }
