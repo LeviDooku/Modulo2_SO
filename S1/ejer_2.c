@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
     char buf[TAM_BLOQUE];
     int  fd_input, fd_output;
 
-    //APERTURA DE ARCHIVOS (INPUT Y OUTPUT)
+    //APERTURA Y CREACIÓN DE ARCHIVOS (INPUT Y OUTPUT)
 
     if((fd_input = open(input_file, O_RDONLY)) < 0){
         printf("\n[-] ERROR: apertura fichero argumento", errno);
